@@ -12,6 +12,8 @@ public class Player2D : MonoBehaviour
     private InputAction moveInput;
     private InputAction attackInput;
     private int points;
+    private int health = 3;
+    public GameObject[] healthPoints;
 
     void Start()
     {
@@ -32,7 +34,7 @@ public class Player2D : MonoBehaviour
 
 
         transform.position += new Vector3(moveDirection.x, moveDirection.y, 0) * speed * Time.deltaTime;
-        if(transform.position.x < -horizontalBounds) // Drugi sposób
+        if (transform.position.x < -horizontalBounds) // Drugi sposób
         {
             // Jeœli ruszy³ siê za daleko w lewo, to przesuñ go na graniczn¹ pozycjê na x
             Vector3 position = transform.position; // Tworzê zmienn¹ z obecn¹ pozycj¹, któr¹ modyfikujê, bo nie mo¿na zmodyfikowaæ samego x w transform.position
@@ -40,7 +42,7 @@ public class Player2D : MonoBehaviour
             transform.position = position;
         }
 
-        if(attackInput.WasPerformedThisFrame())
+        if (attackInput.WasPerformedThisFrame())
         {
             //Shoot
             Instantiate(bullet, shootPoint.position, shootPoint.rotation);
@@ -51,5 +53,20 @@ public class Player2D : MonoBehaviour
     {
         points += amount;
         pointsText.text = points.ToString();
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.CompareTag("Enemy"))
+        {
+
+            health--; // health -=1
+            healthPoints[health].SetActive(false);
+
+            if (health <= 0)
+            {
+                Destroy(gameObject);
+            }
+        }
     }
 }

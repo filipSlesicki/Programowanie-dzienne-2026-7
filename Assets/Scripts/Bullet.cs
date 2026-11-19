@@ -7,6 +7,7 @@ public class Bullet : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //transform.up to kierunek "do góry" (zielona strza³ka) tego obiektu
         transform.position += speed * Time.deltaTime * transform.up;
     }
 
